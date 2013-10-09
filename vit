@@ -194,27 +194,52 @@ elsif($ARGV[0] eq "update" || $ARGV[0] eq "u")
         &printUage();
     }
     
-    &clean($prj_name);
-
     -d "$base_path/$prj_name" || die "project not existing\n";
 
-    open(PATH_INFO, "+< $base_path/$prj_name/path_info") || die "Failed to open path path_info file\n";
+    &clean($prj_name);
 
-    while(<PATH_INFO>)
+    my $file = "$base_path/$prj_name/path_info";
+    my @data = &get_conf_section($file, 'src_path');
+
+    if($data[0])
     {
-        chomp $_;
-        &parseProject($prj_name, $_);
+        &parseProject($prj_name, $data[0]);
     }
 }
 elsif($ARGV[0] eq "list" || $ARGV[0] eq "l")
 {
-    opendir(DH, "$base_path") || die "Fail to open data dir:$base_path,plz check your priveleges\n";
-
-    while(defined(my $dir = readdir(DH)))
+    if(@ARGV == 1) #list all projects
     {
-        if(-d "$base_path/$dir" && $dir ne '.' && $dir ne'..')
+        opendir(DH, "$base_path") || die "Fail to open data dir:$base_path,plz check your priveleges\n";
+
+        while(defined(my $dir = readdir(DH)))
         {
-            print "$dir\n";
+            if(-d "$base_path/$dir" && $dir ne '.' && $dir ne'..')
+            {
+                print "$dir\n";
+            }
+        }
+    }
+    elsif(@ARGV == 2) #print out the specified project's path info
+    {
+        my @data;
+        $prj_name = $ARGV[1];
+        if(-d "$base_path/$prj_name" && -f "$base_path/$prj_name/path_info")
+        {
+            @data = &get_conf_section("$base_path/$prj_name/path_info", 'src_path');
+            foreach(@data)
+            {
+                if(defined($_))
+                {
+                    print "$_\n";
+                }
+            }
+        }
+        else
+        {
+            print "Failed to list project $prj_name, try:\n";
+            print "1.update the project\n";
+            print "2.recreate the project\n";
         }
     }
 }

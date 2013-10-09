@@ -142,8 +142,6 @@ sub parseProject()
     chop $cmd_str;
     chop $cmd_str;
 
-    print $cmd_str;
-    print "\n";
     chdir("/"); # To let 'find' parse out with absolute path
 
     if(system "$cmd_str > $base_path/$name/cscope.files" || die "Parsing error:find failure\n")
@@ -231,7 +229,7 @@ sub set_conf_section
 
 # @brief :read conf file and parse as hash
 # @param file :conf file name
-# @return :content as hash parsed from file
+# @return :number for error,content as hash parsed from file
 sub parse_conf
 {
     my ($file) = @_;
@@ -252,8 +250,11 @@ sub parse_conf
             next;
         }
 
-        push @{$tem_value}, $_;
-        $content{$key} = $tem_value;
+        if(defined($tem_value))
+        {
+            push @{$tem_value}, $_;
+            $content{$key} = $tem_value;
+        }
     }
 
     return %content;
