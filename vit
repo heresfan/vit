@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
-#require "/home/ping/work/bin/api.pl";
-require "./api.pl";
+require "/home/ping/bin/api.pl";
+#require "./api.pl";
 
 #====================== Main ===================================
 my $src_path = "";
@@ -60,6 +60,7 @@ elsif($ARGV[0] eq "create" || $ARGV[0] eq "c")
         chomp $_;
         if($_ eq '')
         {
+            print "none";
             last;
         }
         push @exclfile, "$_";
@@ -70,6 +71,7 @@ elsif($ARGV[0] eq "create" || $ARGV[0] eq "c")
         chomp $_;
         if($_ eq '')
         {
+            print "none\n";
             last;
         }
         push @excldir, "$_";

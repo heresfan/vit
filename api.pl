@@ -144,6 +144,7 @@ sub parseProject()
 
     chdir("/"); # To let 'find' parse out with absolute path
 
+    #print "$cmd_str\n";
     if(system "$cmd_str > $base_path/$name/cscope.files" || die "Parsing error:find failure\n")
     {
         print "Parsing failure:find failure\n";
