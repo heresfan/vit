@@ -156,7 +156,7 @@ elsif($ARGV[0] eq "open" || $ARGV[0] eq "o")
     $working_dir_cmd = "NERDTree " . $working_dir_cmd;
 
     #open the project with vim
-    (! system "vim -c \"$working_dir_cmd\" -c \"set tags=$base_path/$prj_name/tags\" -c \"cs add $base_path/$prj_name/cscope.out\"")
+    (! system "vim -g -c \"$working_dir_cmd\" -c \"set tags=$base_path/$prj_name/tags\" -c \"cs add $base_path/$prj_name/cscope.out\"")
            || die "Fail to open project $prj_name, plz try again\n";
 }
 elsif($ARGV[0] eq "delete" || $ARGV[0] eq "d")
